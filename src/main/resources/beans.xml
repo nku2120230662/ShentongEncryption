@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+">
+    <context:property-placeholder location="jdbc.properties"/>
+
+    <!--    配置数据源信息-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${JDBC_DRIVER}"/>
+        <property name="url" value="${DB_URL}"/>
+        <property name="username" value="${USER}"/>
+        <property name="password" value="${PASS}"/>
+    </bean>
+
+    <!--    mybatis配置connection-->
+    <bean id="in" class="org.apache.ibatis.io.Resources" factory-method="getResourceAsStream">
+        <constructor-arg name="resource" value="mybatis-config.xml"/>
+    </bean>
+    <bean id="sqlSessionFactoryBuilder" class="org.apache.ibatis.session.SqlSessionFactoryBuilder"/>
+
+    <bean id="sqlSessionFactory" factory-bean="sqlSessionFactoryBuilder" factory-method="build">
+        <constructor-arg name="inputStream" ref="in"/>
+    </bean>
+
+    <!--   jdbc配置connection-->
+    <bean class="java.lang.Class" factory-method="forName">
+        <constructor-arg name="className" value="com.oscar.Driver"/>
+    </bean>
+
+    <bean id="connection" class="java.sql.DriverManager" factory-method="getConnection" scope="prototype">
+        <constructor-arg name="url" value="jdbc:oscar://localhost:2003/MYDB"/>
+        <constructor-arg name="user" value="sysdba"/>
+        <constructor-arg name="password" value="szoscar55"/>
+    </bean>
+
+</beans>
