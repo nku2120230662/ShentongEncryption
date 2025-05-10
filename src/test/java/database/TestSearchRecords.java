@@ -34,7 +34,7 @@ public class TestSearchRecords {
         Connector mc = new Connector();
         Connection conn=mc.getConnection();
 
-        String[] condition={"students","courses","students.id=courses.student_id","id in [2,3]"};
+        String[] condition={"students","courses","students.ID=courses.STUDENT_ID","ID in [2,3]"};
 
         SearchRecord.MyPlainJoinQueries(conn,condition);
 
@@ -57,7 +57,7 @@ public class TestSearchRecords {
         Connection conn=mc.getConnection();
 
 //        String[] condition={"students","courses","students.id=courses.student_id","id = 2"};"id in [2,3]"
-        String[] condition={"students","courses","students.id=courses.student_id","id in [2,3]"};
+        String[] condition={"students","courses","students.ID=courses.STUDENT_ID","ID in [2,3]"};
 
         SearchEncryptedRecords.SearchStudentsJoinCoursesBySymmetric(conn,condition);
 
@@ -75,7 +75,7 @@ public class TestSearchRecords {
         Connection conn=mc.getConnection();
 
 //        String[] condition={"students","courses","students.id=courses.student_id","id = 2"};"id in [2,3]"
-        String[] condition={"students","courses","students.id=courses.student_id","id in [2,3]"};
+        String[] condition={"students","courses","students.ID=courses.STUDENT_ID","ID in [2,3]"};
 
         SearchEncryptedRecords.SearchStudentsJoinCoursesByIpe(conn,condition);
 

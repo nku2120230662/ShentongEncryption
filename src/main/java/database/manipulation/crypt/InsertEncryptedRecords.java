@@ -14,12 +14,17 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.Map;
 
+import static database.config.Connector.ModelName1;
+
 public class InsertEncryptedRecords {
 
     public static boolean InsertEncryptedStudent(Connection conn, Map<String, Object> data)throws Exception{
         String en_id= SymmetricEncryption.Encrypt(data.get("id"));
         String en_name= SymmetricEncryption.Encrypt(data.get("name"));
-        String sql="insert into encrypted_students values (" +
+        String sql="insert into " +
+                ModelName1+
+                "."+
+                "encrypted_students values (" +
                 "'" +en_id+ "'"+
                 ",'" +en_name+ "'"+
                 ")";
@@ -38,7 +43,10 @@ public class InsertEncryptedRecords {
     }
 
     public static boolean InsertEncryptedCourse(Connection conn, Map<String, Object> data)throws Exception{
-        String sql = "INSERT INTO encrypted_courses (en_course_id, en_grade, en_student_id) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO " +
+                ModelName1+
+                "."+
+                "encrypted_courses (en_course_id, en_grade, en_student_id) VALUES (?, ?, ?)";
         String en_course_id= SymmetricEncryption.Encrypt(data.get("courseId"));
         String en_grade= SymmetricEncryption.Encrypt(data.get("grade"));
         String en_student_id= SymmetricEncryption.Encrypt(data.get("studentId"));

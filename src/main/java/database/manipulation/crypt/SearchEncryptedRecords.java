@@ -6,6 +6,7 @@ import encryption.symmetric.SymmetricEncryption;
 import java.sql.*;
 import java.util.*;
 
+import static database.config.Connector.ModelName1;
 import static database.parameter.Constant.MY_USER;
 
 public class SearchEncryptedRecords {
@@ -13,8 +14,11 @@ public class SearchEncryptedRecords {
     //SearchEncryptedStudents 查询密文表EncryptedStudents，以明文形式返回所有记录
     public static void SearchEncryptedStudents(Connection conn) throws Exception{
         Statement stmt = conn.createStatement();
-
-        ResultSet rs = stmt.executeQuery("select * from encrypted_students");
+        String sql="select * from " +
+                ModelName1 +
+                "."+
+                "encrypted_students";
+        ResultSet rs = stmt.executeQuery(sql);
         // 展开结果集数据库
         while (rs.next()) {
             // 通过字段检索
@@ -29,8 +33,12 @@ public class SearchEncryptedRecords {
 
     public static boolean SearchEncryptedCourses(Connection conn) throws Exception{
         Statement stmt = conn.createStatement();
+        String sql="select * from " +
+                ModelName1 +
+                "."+
+                "encrypted_courses";
+        ResultSet rs = stmt.executeQuery(sql);
 
-        ResultSet rs = stmt.executeQuery("select * from encrypted_courses");
         // 展开结果集数据库
         while (rs.next()) {
             // 通过字段检索
@@ -65,7 +73,7 @@ public class SearchEncryptedRecords {
         String tableB = "encrypted_"+condition[1]; // 表B的名字
         String joinCondition = condition[2]; // 连接条件，类似 "id" 或 "student_id = course_id"
         // 1. 查询tableA
-        String queryA = "SELECT * FROM " + tableA;
+        String queryA = "SELECT * FROM " + ModelName1+ "."+ tableA;
         Statement stmt = conn.createStatement();
         ResultSet rsA = stmt.executeQuery(queryA);
         List<Map<String, Object>> resultA = convertResultSetToList(rsA);
@@ -76,7 +84,7 @@ public class SearchEncryptedRecords {
             resultA=FilterCondition(resultA,filterA);
         }
         // 2. 查询tableB
-        String queryB = "SELECT * FROM " + tableB ;
+        String queryB = "SELECT * FROM " + ModelName1+ "."+ tableB ;
         ResultSet rsB = stmt.executeQuery(queryB);
         List<Map<String, Object>> resultB = convertResultSetToList(rsB);
         String filterB = condition.length > 4 ? condition[4] : "";  // 例如：course_name = 'Math'
@@ -94,8 +102,8 @@ public class SearchEncryptedRecords {
             throw new IllegalArgumentException("Invalid join condition. Expected format 'tableA.columnA = tableB.columnB'.");
         }
 
-        String columnA = "en_"+conditionParts[1];  // 表A中的连接列
-        String columnB = "en_"+conditionParts[3];  // 表B中的连接列
+        String columnA = "EN_"+conditionParts[1];  // 表A中的连接列
+        String columnB = "EN_"+conditionParts[3];  // 表B中的连接列
         // 内存中嵌套循环进行连接
         for (Map<String, Object> rowA : resultA) {
             for (Map<String, Object> rowB : resultB) {
@@ -164,17 +172,19 @@ public class SearchEncryptedRecords {
         String joinCondition = condition[2]; // 连接条件，类似 "id" 或 "student_id = course_id"
 
         // 1. 查询tableA
-        String queryA = "SELECT * FROM " + tableA;
+        String queryA = "SELECT * FROM " + ModelName1+ "."+ tableA;
         Statement stmt = conn.createStatement();
         ResultSet rsA = stmt.executeQuery(queryA);
         List<Map<String, Object>> resultA = convertResultSetToList(rsA);
+        System.out.println(resultA);
         String filterA = condition.length > 3 ? condition[3] : "";  // 例如：student_id > 10
         if(!filterA.isEmpty()){
             resultA=FilterCondition(resultA,filterA);
         }
+        System.out.println(resultA);
 
         // 2. 查询tableB
-        String queryB = "SELECT * FROM " + tableB ;
+        String queryB = "SELECT * FROM " + ModelName1+ "."+ tableB ;
         ResultSet rsB = stmt.executeQuery(queryB);
         List<Map<String, Object>> resultB = convertResultSetToList(rsB);
         String filterB = condition.length > 4 ? condition[4] : "";  // 例如：course_name = 'Math'
@@ -191,8 +201,8 @@ public class SearchEncryptedRecords {
             throw new IllegalArgumentException("Invalid join condition. Expected format 'tableA.columnA = tableB.columnB'.");
         }
 
-        String columnA = "en_"+conditionParts[1];  // 表A中的连接列
-        String columnB = "en_"+conditionParts[3];  // 表B中的连接列
+        String columnA = "EN_"+conditionParts[1];  // 表A中的连接列
+        String columnB = "EN_"+conditionParts[3];  // 表B中的连接列
 
         // 内存中嵌套循环进行连接
         for (Map<String, Object> rowA : resultA) {
@@ -243,7 +253,7 @@ public class SearchEncryptedRecords {
         List<Map<String, Object>> result = new ArrayList<>();
         String[] parts = filterA.split(" ");
         // 重写属性名
-        String attr = "en_"+parts[0].trim();
+        String attr = "EN_"+parts[0].trim();
         String condition = parts[2].trim();
         // 判断是否是in查询(attr=val 或 attr In [val1, val2, ...])
         if(filterA.contains("=")){

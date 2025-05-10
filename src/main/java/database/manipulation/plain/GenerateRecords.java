@@ -9,7 +9,10 @@ import java.sql.Statement;
 import java.util.Map;
 import java.util.Random;
 
+import static database.config.Connector.ModelName1;
+
 public class GenerateRecords {
+    // 随机生成指定数量的记录
     public static boolean GenerateCourseRecords(Connection conn) throws Exception{
         Random rand = new Random();
         Statement stmt=conn.createStatement();
@@ -19,7 +22,10 @@ public class GenerateRecords {
             int grades=rand.nextInt(100);
             int t_id=rand.nextInt(100);
 
-            String sql="insert into courses values(" +
+            String sql="insert into " +
+                    ModelName1+
+                    "."+
+                    "courses values(" +
                     s_id + "," +
                     grades + "," +
                     t_id +
@@ -34,9 +40,12 @@ public class GenerateRecords {
         return true;
     }
 
-    // 构造map对象将字段插入数据表
+    // 自定义封装记录为map对象插入数据表
     public static void InsertCourseRecord(Connection conn, Map<String, Object> data) throws SQLException {
-        String sql = "INSERT INTO courses (course_id, grade, student_id) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO " +
+                ModelName1+
+                "."+
+                "courses (course_id, grade, student_id) VALUES (?, ?, ?)";
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setObject(1, data.get("courseId"));
@@ -46,6 +55,7 @@ public class GenerateRecords {
         }
     }
 
+    // 随机生成指定数量的记录
     public static void GenerateStudentRecords(Connection conn) throws Exception {
         Random rand = new Random();
         Statement stmt=conn.createStatement();
@@ -54,7 +64,10 @@ public class GenerateRecords {
             int id=i+1;
             String name= RandomString.generateRandomString(5);
 
-            String sql="insert into students(id,name) values(" +
+            String sql="insert into " +
+                    ModelName1+
+                    "."+
+                    "students(id,name) values(" +
                     id + "," +
                     "'"+ name  + "'"+
                     ")";
@@ -67,9 +80,12 @@ public class GenerateRecords {
         stmt.close();
     }
 
-    // 构造map对象将字段插入数据表
+    // 自定义封装记录为map对象插入数据表
     public static void InsertStudentRecord(Connection conn, Map<String, Object> data) throws SQLException {
-        String sql = "INSERT INTO students (id, name) VALUES (?, ?)";
+        String sql = "INSERT INTO " +
+                ModelName1+
+                "."+
+                "students (id, name) VALUES (?, ?)";
 
         try (PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
             preparedStatement.setObject(1, data.get("id"));

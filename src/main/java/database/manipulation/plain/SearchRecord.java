@@ -6,13 +6,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static database.config.Connector.ModelName1;
+
 public class SearchRecord {
 
     // 查询表student的全部字段
     public static boolean SearchStudents(Connection conn) throws Exception{
         Statement stmt = conn.createStatement();
-
-        ResultSet rs = stmt.executeQuery("select * from students");
+        String sql = "select * from " +
+                ModelName1+
+                "."+
+                "students";
+        ResultSet rs = stmt.executeQuery(sql);
         // 展开结果集数据库
         while (rs.next()) {
                 // 通过字段检索
@@ -29,8 +34,15 @@ public class SearchRecord {
     // 查询表student的全部字段
     public static boolean SearchStudentsJoinCourses(Connection conn) throws Exception{
         Statement stmt = conn.createStatement();
+        String sql="select * from " +
+                ModelName1+
+                "."+
+                "students JOIN " +
+                ModelName1+
+                "."+
+                "courses on students.id = courses.course_id";
 
-        ResultSet rs = stmt.executeQuery("select * from students JOIN courses on students.id = courses.s_id");
+        ResultSet rs = stmt.executeQuery(sql);
         // 展开结果集数据库
         while (rs.next()) {
             // 通过字段检索
@@ -56,19 +68,21 @@ public class SearchRecord {
 
         // 1. 查询tableA
         // 将筛选条件直接构造sql语句
-        String queryA = "SELECT * FROM " + tableA;
+        String queryA = "SELECT * FROM " + ModelName1+ "."+tableA;
         Statement stmt = conn.createStatement();
         ResultSet rsA = stmt.executeQuery(queryA);
         List<Map<String, Object>> resultA = convertResultSetToList(rsA);
+        System.out.println(resultA);
         String filterA = condition.length > 3 ? condition[3] : "";  // 例如：student_id > 10
         if(!filterA.isEmpty()){
             resultA=FilterCondition(resultA,filterA);
         }
 
         // 2. 查询tableB
-        String queryB = "SELECT * FROM " + tableB ;
+        String queryB = "SELECT * FROM " + ModelName1+"."+tableB ;
         ResultSet rsB = stmt.executeQuery(queryB);
         List<Map<String, Object>> resultB = convertResultSetToList(rsB);
+        System.out.println(resultB);
         String filterB = condition.length > 4 ? condition[4] : "";  // 例如：course_name = 'Math'
         if(!filterB.isEmpty()){
             resultB=FilterCondition(resultB,filterB);
