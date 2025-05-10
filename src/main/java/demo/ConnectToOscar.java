@@ -4,6 +4,8 @@ import java.sql.*;
 import javax.sql.*;
 import com.oscar.Driver;
 
+import static database.config.Connector.ModelName1;
+
 public class ConnectToOscar {
 
 	public static void main(String[] args) {
@@ -26,9 +28,12 @@ public class ConnectToOscar {
 				// 进行数据库操作
 				// 在这里执行您的数据库操作
 			}
-			//进行简单数据操作
+			//进行简单查询操作
 			stmt= con.createStatement();
-			String sql = "SELECT * FROM TESTTABLES.students";
+			String sql = "SELECT * FROM " +
+					ModelName1 +
+					"." +
+					"students";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				//处理

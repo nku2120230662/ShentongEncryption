@@ -10,6 +10,9 @@ import java.sql.Statement;
 public class Connector {
     // 配置连接信息
     Connection conn = null;
+    // 单独封装若干*模式*字段，用于对后续的sql语句做规范调整
+    // demo : SELECT * FROM TESTTABLES.students
+    public static final String ModelName1="TESTTABLES";
 
     //构造函数配置信息
     public Connector() {
