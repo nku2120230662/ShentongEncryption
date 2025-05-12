@@ -72,7 +72,6 @@ public class SearchRecord {
         Statement stmt = conn.createStatement();
         ResultSet rsA = stmt.executeQuery(queryA);
         List<Map<String, Object>> resultA = convertResultSetToList(rsA);
-        System.out.println(resultA);
         String filterA = condition.length > 3 ? condition[3] : "";  // 例如：student_id > 10
         if(!filterA.isEmpty()){
             resultA=FilterCondition(resultA,filterA);
@@ -82,7 +81,6 @@ public class SearchRecord {
         String queryB = "SELECT * FROM " + ModelName1+"."+tableB ;
         ResultSet rsB = stmt.executeQuery(queryB);
         List<Map<String, Object>> resultB = convertResultSetToList(rsB);
-        System.out.println(resultB);
         String filterB = condition.length > 4 ? condition[4] : "";  // 例如：course_name = 'Math'
         if(!filterB.isEmpty()){
             resultB=FilterCondition(resultB,filterB);

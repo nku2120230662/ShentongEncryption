@@ -28,7 +28,6 @@ public class InsertEncryptedRecords {
                 "'" +en_id+ "'"+
                 ",'" +en_name+ "'"+
                 ")";
-        System.out.println(sql);
         Statement stmt=conn.createStatement();
         int result=stmt.executeUpdate(sql);
         if (result>0){

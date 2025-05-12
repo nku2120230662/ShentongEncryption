@@ -63,7 +63,7 @@ public class TestGenerateRecords {
         Connector mc = new Connector();
         Connection conn=mc.getConnection();
         // 同时
-        for(int i=0;i<5;i++){
+        for(int i=0;i<100000;i++){
             Map mp=new HashMap();
             mp.put("id",(Object)i );
             mp.put("name", RandomString.generateRandomString(5));
@@ -80,7 +80,7 @@ public class TestGenerateRecords {
         Connector mc = new Connector();
         Connection conn=mc.getConnection();
         // 同时
-        for(int i=0;i<5;i++){
+        for(int i=0;i<100000;i++){
             Map mp=new HashMap();
             mp.put("courseId",(Object)(10+i));
             mp.put("studentId",(Object)i);

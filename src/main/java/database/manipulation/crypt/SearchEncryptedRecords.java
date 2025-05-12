@@ -176,12 +176,10 @@ public class SearchEncryptedRecords {
         Statement stmt = conn.createStatement();
         ResultSet rsA = stmt.executeQuery(queryA);
         List<Map<String, Object>> resultA = convertResultSetToList(rsA);
-        System.out.println(resultA);
         String filterA = condition.length > 3 ? condition[3] : "";  // 例如：student_id > 10
         if(!filterA.isEmpty()){
             resultA=FilterCondition(resultA,filterA);
         }
-        System.out.println(resultA);
 
         // 2. 查询tableB
         String queryB = "SELECT * FROM " + ModelName1+ "."+ tableB ;
@@ -301,8 +299,6 @@ public class SearchEncryptedRecords {
      * @param inValues
      * @return
      */
-
-
     private static boolean MatchInValues(Map<String, Object> row, String attr, String[] inValues) {
         try{
             if (!row.containsKey(attr)) {
