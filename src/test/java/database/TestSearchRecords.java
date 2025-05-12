@@ -10,11 +10,13 @@ import java.sql.Connection;
 public class TestSearchRecords {
 
     @Test
-    public void testPlainSelection() throws Exception {
+    public void testPlainSingleTableQuery() throws Exception {
         Connector mc = new Connector();
         Connection conn=mc.getConnection();
 
         SearchRecord.SearchStudents(conn);
+        SearchEncryptedRecords.SearchEncryptedStudents(conn);
+        SearchEncryptedRecords.SearchEncryptedCourses(conn);
 
         mc.closeConnection();
     }
@@ -37,16 +39,6 @@ public class TestSearchRecords {
         String[] condition={"students","courses","students.ID=courses.STUDENT_ID","ID in [2,3]"};
 
         SearchRecord.MyPlainJoinQueries(conn,condition);
-
-        mc.closeConnection();
-    }
-
-    @Test
-    public void testSearchEncryptedStudents() throws Exception {
-        Connector mc = new Connector();
-        Connection conn=mc.getConnection();
-
-        SearchEncryptedRecords.SearchEncryptedStudents(conn);
 
         mc.closeConnection();
     }

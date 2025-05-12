@@ -18,7 +18,7 @@ import static database.config.Connector.ModelName1;
 
 public class InsertEncryptedRecords {
 
-    public static boolean InsertEncryptedStudent(Connection conn, Map<String, Object> data)throws Exception{
+    public static boolean InsertEncryptedStudent(Statement stmt, Map<String, Object> data)throws Exception{
         String en_id= SymmetricEncryption.Encrypt(data.get("id"));
         String en_name= SymmetricEncryption.Encrypt(data.get("name"));
         String sql="insert into " +
@@ -28,16 +28,12 @@ public class InsertEncryptedRecords {
                 "'" +en_id+ "'"+
                 ",'" +en_name+ "'"+
                 ")";
-        Statement stmt=conn.createStatement();
         int result=stmt.executeUpdate(sql);
         if (result>0){
-            stmt.close();
-            System.out.println("Record Inserted");
+//            System.out.println("Record Inserted");
             return true;
         }
-        System.out.println("insert failed");
-
-        stmt.close();
+//        System.out.println("insert failed");
         return false;
     }
 

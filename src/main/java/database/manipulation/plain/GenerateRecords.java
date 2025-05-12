@@ -13,9 +13,8 @@ import static database.config.Connector.ModelName1;
 
 public class GenerateRecords {
     // 随机生成指定数量的记录
-    public static boolean GenerateCourseRecords(Connection conn) throws Exception{
+    public static boolean GenerateCourseRecords(Statement stmt) throws Exception{
         Random rand = new Random();
-        Statement stmt=conn.createStatement();
 
         for(int i=0;i<5;i++){
             int s_id=rand.nextInt(100);
@@ -36,7 +35,6 @@ public class GenerateRecords {
             }
         }
 
-        stmt.close();
         return true;
     }
 

@@ -7,6 +7,7 @@ import database.parameter.RandomString;
 import org.junit.Test;
 
 import java.sql.Connection;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -34,9 +35,11 @@ public class TestGenerateRecords {
         mp.put("name","duan");
         Connector mc = new Connector();
         Connection conn=mc.getConnection();
+        Statement stmt=conn.createStatement();
 
-        InsertEncryptedRecords.InsertEncryptedStudent(conn,mp);
+        InsertEncryptedRecords.InsertEncryptedStudent(stmt,mp);
 
+        stmt.close();
         mc.closeConnection();
     }
 
@@ -44,7 +47,8 @@ public class TestGenerateRecords {
     public void testGenerateCourseRecords() throws Exception {
         Connector mc = new Connector();
         Connection conn=mc.getConnection();
-        GenerateRecords.GenerateCourseRecords(conn);
+        Statement stmt=conn.createStatement();
+        GenerateRecords.GenerateCourseRecords(stmt);
         mc.closeConnection();
     }
 
@@ -62,14 +66,17 @@ public class TestGenerateRecords {
     public void testGenerateStudentConnectedRecords() throws Exception {
         Connector mc = new Connector();
         Connection conn=mc.getConnection();
+        Statement stmt=conn.createStatement();
         // 同时
-        for(int i=0;i<100000;i++){
+        for(int i=100000;i<1000000;i++){
             Map mp=new HashMap();
             mp.put("id",(Object)i );
             mp.put("name", RandomString.generateRandomString(5));
+
             GenerateRecords.InsertStudentRecord(conn,mp);
-            InsertEncryptedRecords.InsertEncryptedStudent(conn,mp);
+            InsertEncryptedRecords.InsertEncryptedStudent(stmt,mp);
         }
+        stmt.close();
 
         mc.closeConnection();
     }
@@ -80,7 +87,7 @@ public class TestGenerateRecords {
         Connector mc = new Connector();
         Connection conn=mc.getConnection();
         // 同时
-        for(int i=0;i<100000;i++){
+        for(int i=100000;i<1000000;i++){
             Map mp=new HashMap();
             mp.put("courseId",(Object)(10+i));
             mp.put("studentId",(Object)i);
